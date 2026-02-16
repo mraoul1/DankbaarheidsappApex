@@ -1,0 +1,46 @@
+{
+    "workshoptitle": "Build a Dutch Gratitude Journal with Oracle APEX",
+    "help": "raoul@example.com",
+    "tutorials": [
+        {
+            "title": "Introduction",
+            "description": "Learn what we're building and why",
+            "filename": "../../introduction/introduction.md"
+        },
+        {
+            "title": "Lab 1: Provision an Always Free Autonomous Database",
+            "description": "Set up OCI and create your free database with APEX",
+            "filename": "../../lab1-provision-oci/lab1-provision-oci.md"
+        },
+        {
+            "title": "Lab 2: Create the Database Schema",
+            "description": "Build tables, procedures, and seed 100 Dutch questions",
+            "filename": "../../lab2-create-schema/lab2-create-schema.md"
+        },
+        {
+            "title": "Lab 3: Build the APEX Application",
+            "description": "Create the app with authentication, daily question, and journal entry pages",
+            "filename": "../../lab3-build-apex-app/lab3-build-apex-app.md"
+        },
+        {
+            "title": "Lab 4: Implement Fuzzy Duplicate Detection",
+            "description": "Prevent repeated entries using FUZZY_MATCH with 85% similarity threshold",
+            "filename": "../../lab4-duplicate-detection/lab4-duplicate-detection.md"
+        },
+        {
+            "title": "Lab 5: PWA and Push Notifications",
+            "description": "Make the app installable and send daily 21:00 reminders",
+            "filename": "../../lab5-pwa-notifications/lab5-pwa-notifications.md"
+        },
+        {
+            "title": "Lab 6: Styling and Dark Mode",
+            "description": "Create a warm, beautiful journal interface with dark mode support",
+            "filename": "../../lab6-styling-dark-mode/lab6-styling-dark-mode.md"
+        },
+        {
+            "title": "Lab 7: Git Export and Deployment",
+            "description": "Export your APEX app for version control and share on GitHub",
+            "filename": "../../lab7-git-export/lab7-git-export.md"
+        }
+    ]
+}
