@@ -29,7 +29,7 @@ This lab assumes you have:
 
     ![Placeholder: App Builder home with Create button highlighted](images/apex-app-create.png " ")
 
-2. Click **New Application**.
+2. Click **Use Create App Wizard**.
 
 3. Set the following properties:
 
@@ -37,11 +37,11 @@ This lab assumes you have:
     |---|---|
     | **Name** | `Dankbaarheid` |
     | **Appearance → Theme Style** | Vita – Dark (we'll customize later) |
-    | **Application Icon** | Choose a heart icon or upload a custom icon |
+    | **Application Icon** | Choose the write page icon or upload a custom icon |
 
     ![Placeholder: Create Application wizard with name and theme settings](images/apex-app-wizard.png " ")
 
-4. Remove all default pages that were added (Home, etc.) by clicking the **X** next to each page. We will create our own pages.
+4. We don't need extra standard pages. We will create our own pages.
 
 5. Click **Create Application**.
 
@@ -73,7 +73,7 @@ This lab assumes you have:
 
 6. Click **Create Authentication Scheme**.
 
-7. The new scheme should automatically be set as **Current**. Verify this by checking the green dot next to it.
+7. The new scheme nees to be set as current. Click on the new scheme and click **Make Current Scheme**
 
     ![Placeholder: Authentication schemes list showing Custom Journal Auth as current](images/apex-auth-current.png " ")
 
@@ -143,8 +143,8 @@ APEX created a default login page (typically Page 9999). Let's customize it for 
     | Item Name | Type | Label | Validation |
     |---|---|---|---|
     | `P2_USERNAME` | Text Field | `Gebruikersnaam` | Required, max 255 chars |
-    | `P2_EMAIL` | Text Field | `E-mailadres` | Required, valid email format |
-    | `P2_PASSWORD` | Password | `Wachtwoord` | Required, min 8 chars |
+    | `P2_EMAIL` | Text Field | `E-mailadres` | Required, subtype email |
+    | `P2_PASSWORD` | Password | `Wachtwoord` | Required |
     | `P2_PASSWORD_CONFIRM` | Password | `Wachtwoord bevestigen` | Required |
     | `P2_DISPLAY_NAME` | Text Field | `Weergavenaam` | Optional |
 
@@ -259,6 +259,8 @@ This is the heart of the application — the page users see every day.
     - `P10_QUESTION_TEXT` — Today's question text
     - `P10_CATEGORY` — Question category
     - `P10_ALREADY_ANSWERED` — Y/N flag
+    - `P10_ENTRY_TEXT` - to hold today's answer if already submitted
+    - 
 
 4. Create a **Before Header** process to fetch the daily question:
     - **Name**: `Get Daily Question`
@@ -290,10 +292,9 @@ This is the heart of the application — the page users see every day.
     END;
     ```
 
-    > **Note:** Create `P10_ENTRY_TEXT` as an additional hidden item to hold today's answer if already submitted.
-
 5. Create the **Date Header** region:
     - **Type**: Static Content
+    - **Template**: Blank with attribute (no grid)
     - **Source → HTML Code**:
     ```html
     <div class="date-header" style="text-align:center; padding: 16px 0 8px;">
@@ -309,8 +310,8 @@ This is the heart of the application — the page users see every day.
 
 6. Create the **Question Card** region:
     - **Type**: Static Content
-    - **Title**: (leave blank)
-    - **Condition**: `P10_ALREADY_ANSWERED` = `N`
+    - **Title**: Vraag van de dag
+    - **Condition** Item = value: `P10_ALREADY_ANSWERED` = `N`
     - **Source → HTML Code**:
     ```html
     <div class="question-card">
@@ -324,15 +325,13 @@ This is the heart of the application — the page users see every day.
 7. Create the **Answer Input** region (only shown when not yet answered):
     - **Type**: Static Content
     - **Title**: (leave blank)
-    - **Condition**: `P10_ALREADY_ANSWERED` = `N`
+    - **Template**: Blank with attribute (no grid)
+    - **Condition** Item = value: `P10_ALREADY_ANSWERED` = `N`
     - Create item `P10_ANSWER_TEXT`:
         - **Type**: Textarea
         - **Label**: `Jouw antwoord`
         - **Placeholder**: `Typ hier je antwoord... (minimaal 10 tekens)`
         - **Height**: 5 rows
-
-    - Create item `P10_CHAR_COUNT` (Display Only):
-        - This will be updated by Dynamic Action (below)
 
 8. Create the **Submit Button**:
     - **Button Name**: `BTN_SUBMIT`
@@ -430,27 +429,6 @@ This is the heart of the application — the page users see every day.
 
     ![Placeholder: Page Designer showing the Already Answered region](images/apex-already-answered.png " ")
 
-11. Create a **Dynamic Action** for character count feedback:
-    - **Event**: Key Release
-    - **Selection Type**: Item → `P10_ANSWER_TEXT`
-    - **True Action**: Execute JavaScript:
-    ```javascript
-    var len = $v('P10_ANSWER_TEXT').trim().length;
-    var el = document.getElementById('char-feedback');
-    if (!el) {
-        $('<div id="char-feedback" class="char-feedback"></div>')
-            .insertAfter('#P10_ANSWER_TEXT');
-        el = document.getElementById('char-feedback');
-    }
-    if (len < 10) {
-        el.textContent = 'Nog ' + (10 - len) + ' tekens nodig';
-        el.className = 'char-feedback char-feedback--warning';
-    } else {
-        el.textContent = 'Klaar om op te slaan ✓';
-        el.className = 'char-feedback char-feedback--ready';
-    }
-    ```
-
 12. Click **Save** and **Run** to test.
 
     ![Placeholder: Running page showing daily question with textarea](images/apex-daily-question-run.png " ")
@@ -494,9 +472,9 @@ This is the heart of the application — the page users see every day.
 
 4. Set **Pagination**:
     - **Type**: Scroll (loads more as user scrolls)
-    - **Maximum Rows per Page**: 30
 
 5. Add a stats header above the cards. Create a **Static Content** region positioned before the cards:
+    - **Title**: `Jouw dankbaarheids-reis`
     - **Source → SQL Query** (use PL/SQL Dynamic Content type):
 
     ```sql
@@ -536,7 +514,6 @@ This is the heart of the application — the page users see every day.
         ```sql
         SELECT email FROM app_users WHERE user_id = pkg_journal.get_current_user_id
         ```
-        - `P30_DISPLAY_NAME` — Text Field, editable
         - `P30_DARK_MODE` — Switch (On/Off)
             - **Label**: `Donker thema`
 
@@ -579,6 +556,7 @@ This is the heart of the application — the page users see every day.
 3. Click **Create Entry** and set:
     - **Sequence**: 5 (to appear first)
     - **Image/Class**: `fa-fire`
+    - **Target**: `No Target`
     - **List Entry Label**:
     ```
     🔥 &P0_STREAK. dagen
@@ -590,7 +568,7 @@ This is the heart of the application — the page users see every day.
 5. Navigate to **Shared Components** → **Application Processes**:
     - Create a new process:
         - **Name**: `Set Streak`
-        - **Point**: On Load: Before Header (on every page)
+        - **Point**: On Load: Before Header 
         - **PL/SQL Code**:
         ```sql
         BEGIN
@@ -617,7 +595,7 @@ This is the heart of the application — the page users see every day.
 
     - [ ] Go to the Registration page and create a new account
     - [ ] After registration, you should be auto-logged in and see the Daily Question
-    - [ ] Type an answer (less than 10 characters) — check that the character counter shows a warning
+    - [ ] Type an answer (less than 10 characters)
     - [ ] Type an answer (10+ characters) and click **Opslaan**
     - [ ] Verify the success state shows ("Je hebt vandaag al je dankbaarheid gedeeld!")
     - [ ] Navigate to **Mijn antwoorden** — verify your entry appears
