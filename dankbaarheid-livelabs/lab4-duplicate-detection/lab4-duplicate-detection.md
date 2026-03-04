@@ -331,7 +331,7 @@ Since we enforce one entry per day, to properly test duplicate detection in the 
     COMMIT;
     ```
 
-5. Go back to the app and try submitting: `Ik ben dankbaar voor het lekkere eten met mijn gezin`
+5. Go back to the app and try submitting: `Ik ben dankbaar voor het heerlijke eten met mijn gezin`
 
 6. You should see the red duplicate error banner with the previous answer date and text.
 
