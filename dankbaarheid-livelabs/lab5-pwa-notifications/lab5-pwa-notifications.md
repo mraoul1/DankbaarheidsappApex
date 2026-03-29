@@ -43,11 +43,19 @@ This lab assumes you have:
 
     ![Placeholder: PWA settings page with all options configured](images/apex-pwa-settings.png " ")
 
-3. Upload an **App Icon**. APEX requires one icon and auto-generates all sizes needed for different devices.
+3. Upload an **App Icon**. Navigate to **Shared Components** → **User Interface Attributes**.
 
-    > **Tip:** Use a simple icon — a heart emoji, a gratitude symbol, or the letter "D" for Dankbaarheid. The icon should be at least 512x512 pixels, PNG format, with a transparent or `#F5F0E8` background.
+    a. In the Icon region click **Change Icon**.
 
-    ![Placeholder: App Icon upload section](images/apex-pwa-icon.png " ")
+    b. In the dialog that appears, click **Choose File** and select a PNG image that is at least **512×512 pixels**. APEX will auto-generate all required icon sizes (192×192, 512×512, maskable) from this single image.
+
+    c. Click **Save** or **Apply** in the upload dialog.
+
+    > **Tip:** Use a simple, recognizable icon — a heart symbol, a gratitude/prayer hands emoji, or the letter "D" for Dankbaarheid. The image should be a square PNG with a solid `#F5F0E8` (cream) or transparent background. Avoid fine details — the icon will be displayed as small as 48×48 on some devices.
+
+    > **Note:** If you don't have an icon yet, you can generate one for free at [favicon.io](https://favicon.io/) (text → icon) or [realfavicongenerator.net](https://realfavicongenerator.net/). Upload the largest size (512×512) and let APEX handle the rest.
+
+    ![Placeholder: PWA App Icon upload dialog with icon preview](images/apex-pwa-icon.png " ")
 
 4. Click **Apply Changes**.
 
@@ -80,7 +88,7 @@ This lab assumes you have:
 
     ![Placeholder: "Add Settings Page" button](images/apex-push-add-settings.png " ")
 
-5. Note the **page number** of the auto-generated settings page (e.g., Page 40). We'll link to this from our settings page.
+5. Note the **page number** of the auto-generated settings page (e.g., Page 20010). We'll link to this from our settings page.
 
 6. Click **Apply Changes**.
 
@@ -88,7 +96,7 @@ This lab assumes you have:
 
 1. Open **Page 30** (Instellingen) in Page Designer.
 
-2. In the **Notificaties** section (or create one), add a button or link that navigates to the auto-generated push notification settings page:
+2. Create a **Notificaties** region, add a button or link that navigates to the auto-generated push notification settings page:
 
     - Create a new **Static Content** region:
         - **Title**: `Notificaties`
@@ -108,7 +116,7 @@ This lab assumes you have:
         </div>
         ```
 
-    > **Note:** Replace `40` with the actual page number of the auto-generated push notification settings page.
+    > **Note:** Replace `20010` with the actual page number of the auto-generated push notification settings page.
 
     ![Placeholder: Settings page with notification section and link](images/apex-notification-settings.png " ")
 
@@ -121,6 +129,7 @@ We'll use `DBMS_SCHEDULER` to send push notifications to all subscribed users ev
 1. Navigate to **SQL Workshop** → **SQL Commands**.
 
 2. Run the following SQL to create the scheduled job:
+    > **Important:** Replace `104` with your actual APEX Application ID! You can find it in the App Builder URL or on the application home page.
 
     ```sql
     BEGIN
@@ -129,7 +138,7 @@ We'll use `DBMS_SCHEDULER` to send push notifications to all subscribed users ev
             job_type        => 'PLSQL_BLOCK',
             job_action      => q'[
                 DECLARE
-                    l_app_id CONSTANT NUMBER := 100;  -- Change to your Application ID!
+                    l_app_id CONSTANT NUMBER := 104;  -- Change to your Application ID!
                 BEGIN
                     -- Create an APEX session context
                     -- (required for APEX_PWA calls outside of an APEX session)
@@ -182,8 +191,6 @@ We'll use `DBMS_SCHEDULER` to send push notifications to all subscribed users ev
     /
     ```
 
-    > **Important:** Replace `100` with your actual APEX Application ID! You can find it in the App Builder URL or on the application home page.
-
     ![Placeholder: SQL Commands showing scheduler job created successfully](images/apex-scheduler-created.png " ")
 
 3. Verify the job was created:
@@ -204,7 +211,10 @@ We'll use `DBMS_SCHEDULER` to send push notifications to all subscribed users ev
     ```sql
     BEGIN
         -- Manually run the scheduled job
-        DBMS_SCHEDULER.RUN_JOB('DAILY_GRATITUDE_REMINDER');
+        DBMS_SCHEDULER.RUN_JOB(
+        job_name            => 'DAILY_GRATITUDE_REMINDER',
+        use_current_session => FALSE
+        );
     END;
     /
     ```
@@ -271,24 +281,24 @@ Instead of `DBMS_SCHEDULER`, you can use **APEX Automations** for a more integra
     - **Android (Chrome):** Tap the browser menu → "Add to Home Screen" or "Install app"
     - **iOS (Safari):** Tap Share button → "Add to Home Screen"
 
-    ![Placeholder: Mobile phone showing "Add to Home Screen" option](images/apex-mobile-install.png " ")
+    ![Placeholder: Mobile phone showing "Add to Home Screen" option](images/apex-mobile-install.jpeg " ")
 
 3. Open the installed app from your home screen. It should launch in **standalone mode** (no browser chrome — looks like a native app).
 
-    ![Placeholder: App running in standalone mode on mobile](images/apex-mobile-standalone.png " ")
+    ![Placeholder: App running in standalone mode on mobile](images/apex-mobile-standalone.jpeg " ")
 
 4. Navigate to **Instellingen** → **Notificatie-instellingen beheren**.
 
 5. Enable push notifications when prompted by the browser.
 
-    ![Placeholder: Push notification permission dialog on mobile](images/apex-mobile-push-permission.png " ")
+    ![Placeholder: Push notification permission dialog on mobile](images/apex-mobile-push-permission.jpeg " ")
 
 6. Verify your subscription was registered:
 
     ```sql
-    SELECT user_name, subscription_created_on
+    SELECT user_name, created_on
     FROM   apex_appl_push_subscriptions
-    WHERE  application_id = 100;  -- Your app ID
+    WHERE  application_id = 104;  -- Your app ID
     ```
 
     ![Placeholder: Query showing push subscription registered](images/apex-push-subscriptions.png " ")
@@ -296,15 +306,16 @@ Instead of `DBMS_SCHEDULER`, you can use **APEX Automations** for a more integra
 7. Test by manually triggering the job:
 
     ```sql
-    BEGIN
-        DBMS_SCHEDULER.RUN_JOB('DAILY_GRATITUDE_REMINDER');
-    END;
+        DBMS_SCHEDULER.RUN_JOB(
+            job_name            => 'DAILY_GRATITUDE_REMINDER',
+            use_current_session => FALSE
+        );
     /
     ```
 
 8. Within 2 minutes, you should receive a push notification on your phone.
 
-    ![Placeholder: Push notification appearing on phone lock screen](images/apex-mobile-notification.png " ")
+    ![Placeholder: Push notification appearing on phone lock screen](images/apex-mobile-notification.jpeg " ")
 
 9. Tap the notification — it should open the app to the daily question page.
 

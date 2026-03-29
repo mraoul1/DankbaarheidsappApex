@@ -520,10 +520,16 @@ This is the heart of the application — the page users see every day.
 3. Create a **Save** button and process:
     - Process PL/SQL:
     ```sql
-    UPDATE app_users
-    SET    display_name = :P30_DISPLAY_NAME,
-           dark_mode    = :P30_DARK_MODE
-    WHERE  user_id = pkg_journal.get_current_user_id;
+    DECLARE
+    l_user_id NUMBER;
+    BEGIN
+        l_user_id := pkg_journal.get_current_user_id;
+        
+        UPDATE app_users
+        SET    display_name = :P30_DISPLAY_NAME,
+            dark_mode    = :P30_DARK_MODE
+        WHERE  user_id = l_user_id;
+    END;
     ```
 
 4. Create a **Static Content** region for **Data Export**:
