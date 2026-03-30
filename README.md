@@ -4,8 +4,6 @@
 
 Built on Oracle APEX 24.2 and Oracle AI Database 26ai. Runs for free on Oracle Cloud's Always Free tier. No Firebase, no third-party services, no App Store required.
 
-<!-- Replace with actual screenshot once the app is built -->
-![Placeholder: App screenshot showing daily question page on mobile](docs/images/hero-screenshot.png)
 
 ---
 
