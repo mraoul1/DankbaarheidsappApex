@@ -337,3 +337,13 @@
     .notification-settings {
         padding: 4px 0;
     }
+
+    /* Mobile: full-width touch-friendly buttons */
+    @media (max-width: 640px) {
+        .t-Button[type="submit"],
+        .t-Button--hot {
+            width: 100%;
+            min-height: 48px;
+            font-size: 1rem;
+        }
+    }

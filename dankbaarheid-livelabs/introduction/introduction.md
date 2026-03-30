@@ -2,11 +2,13 @@
 
 ## About this Workshop
 
-Research shows that practicing daily gratitude can reduce depressive symptoms by up to 35%. But none of the existing gratitude apps combine **Dutch language content**, **web accessibility**, **daily unique questions**, and **intelligent duplicate detection**. In this workshop, you will build exactly that — a production-quality Dutch gratitude journaling app on Oracle APEX.
+Research shows that practicing daily gratitude can reduce depressive symptoms by up to 35%. But none of the existing gratitude apps combine **Dutch language content**, **web accessibility**, **daily unique questions**, and **intelligent duplicate detection**. In this workshop, you will build exactly that — a complete, fully-functional Dutch gratitude journaling app on Oracle APEX.
 
 What makes this app special is the **hard duplicate blocking** feature: users cannot submit an answer they've already given within the past year. Using Oracle's `FUZZY_MATCH` operator with the TRIGRAM algorithm (the equivalent of PostgreSQL's `pg_trgm`), we detect 85%+ text similarity and force users to think deeper — turning a simple journaling app into a genuine personal growth tool.
 
 The app runs entirely on Oracle Cloud Infrastructure's **Always Free tier** at zero cost, using Oracle AI Database 26ai and APEX 24.2. It is a Progressive Web App with native push notifications — no Firebase, no third-party services, no App Store required.
+
+The Always Free tier is ideal for personal projects and learning. For a multi-user or commercial deployment, Oracle recommends upgrading to a paid account.
 
 ![Placeholder: screenshot of the finished app on mobile showing the daily question page with warm cream/brown styling](images/finished-app-mobile.png " ")
 

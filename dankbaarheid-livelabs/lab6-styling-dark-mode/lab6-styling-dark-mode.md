@@ -530,8 +530,6 @@ We'll implement dark mode that: (a) follows the OS preference by default, (b) ca
     - [ ] Settings page sections stack properly
     - [ ] Navigation bar is usable without horizontal scrolling
 
-    ![Placeholder: Mobile view of the app at 375px width](images/apex-mobile-responsive.png " ")
-
 3. Check at **768px width** (tablet):
 
     - [ ] Content is centered with a max-width
@@ -544,9 +542,7 @@ We'll implement dark mode that: (a) follows the OS preference by default, (b) ca
     - [ ] History cards don't stretch too wide
     - [ ] Clean, focused reading experience
 
-    ![Placeholder: Desktop view showing centered content](images/apex-desktop-view.png " ")
-
-Your app now has a beautiful, warm journaling interface with dark mode support! You may now **proceed to the next lab**.
+Your app now has a beautiful, warm journaling interface with dark mode support!
 
 ## Acknowledgements
 

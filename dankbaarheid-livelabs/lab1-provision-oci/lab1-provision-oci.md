@@ -4,6 +4,8 @@
 
 In this lab, you will create an Oracle Cloud Infrastructure (OCI) account and provision an Always Free Autonomous Database running Oracle AI Database 26ai with APEX 24.2. This gives you a fully managed Oracle database with APEX pre-installed — at zero cost, forever.
 
+Note: The Always Free tier is designed by Oracle for personal projects, learning, and proof-of-concept use. It has no SLA and no support entitlement. For a commercial or multi-user deployment, consider upgrading to a Pay As You Go account — Always Free resources remain free even on paid accounts.
+
 Estimated Time: 20 minutes
 
 ### Objectives

@@ -36,11 +36,6 @@
             "title": "Lab 6: Styling and Dark Mode",
             "description": "Create a warm, beautiful journal interface with dark mode support",
             "filename": "../../lab6-styling-dark-mode/lab6-styling-dark-mode.md"
-        },
-        {
-            "title": "Lab 7: Git Export and Deployment",
-            "description": "Export your APEX app for version control and share on GitHub",
-            "filename": "../../lab7-git-export/lab7-git-export.md"
         }
     ]
 }
